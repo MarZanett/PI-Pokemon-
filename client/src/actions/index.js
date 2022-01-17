@@ -18,15 +18,22 @@ export function filterPokemonByType(payload) {
 }
 
 export function filterPokemonCreated(payload) {
-    return {
-      type: "FILTER_CREATED",
-      payload,
-    };
-  }
+  return {
+    type: "FILTER_CREATED",
+    payload,
+  };
+}
 
-  export function orderByName(payload) {
-    return {
-      type: "ORDER_NAME",
-      payload,
-    };
-  }
+export function orderByName(payload) {
+  return {
+    type: "ORDER_NAME",
+    payload,
+  };
+}
+
+export function orderByStr(payload) {
+  return {
+    type: "ORDER_STR",
+    payload,
+  };
+}

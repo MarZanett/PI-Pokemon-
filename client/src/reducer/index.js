@@ -62,9 +62,37 @@ function rootReducer(state = initialState, action) {
         ...state,
         pokemons: sorterdArr,
       };
+
+      case "ORDER_STR":
+        const sorterdArray =
+        action.payload === "asc"
+          ? state.pokemons.sort((a, b) => {
+              if (a.attack > b.attack) {
+                return 1;
+              }
+              if (b.attack > a.attack) {
+                return -1;
+              }
+              return 0;
+            })
+          : state.pokemons.sort((a, b) => {
+              if (a.attack > b.attack) {
+                return -1;
+              }
+              if (b.attack > a.attack) {
+                return 1;
+              }
+              return 0;
+            });
+      return {
+        ...state,
+        pokemons: sorterdArray,
+      };
+
     default:
       return state;
   }
+
 }
 
 export default rootReducer;

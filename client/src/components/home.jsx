@@ -6,6 +6,7 @@ import {
   filterPokemonByType,
   filterPokemonCreated,
   orderByName,
+  orderByStr,
 } from "../actions";
 import { Link } from "react-router-dom";
 import PokeCard from "./card";
@@ -17,6 +18,8 @@ export default function Home() {
   const allPokemons = useSelector((state) => state.pokemons); //Me traigo del reducer el stado pokemons
   const [currentPage, setCurrentPage] = useState(1); //Pagina actual
   const [pokemonsPerPage, setPokemonsPerPage] = useState(12); // Pokemon por pagina
+  const [orderName,setOrderName] = useState("") // Es un estado local que arranca vacio 
+  const [orderStr,setOrderStr] = useState("")
   const indexOfLastPokemon = currentPage * pokemonsPerPage; // Indice del ultimo pokemon
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage; // Indice del primer Pokemon
   const currentPokemons = allPokemons.slice(
@@ -49,7 +52,14 @@ export default function Home() {
     e.preventDefault();
     dispatch(orderByName(e.target.value));
     setCurrentPage(1);
-    setOrden(`Sorted ${e.target.value}`);
+    setOrderName(`Sorted ${e.target.value}`);
+  }
+
+  function handleOrderByStr(e) {
+    e.preventDefault();
+    dispatch(orderByStr(e.target.value));
+    setCurrentPage(1);
+    setOrderStr(`Sorted ${e.target.value}`);
   }
 
   return (
@@ -73,7 +83,7 @@ export default function Home() {
         </div>
 
         <div>
-          <p>Existing or NewPokemon</p>
+          <p>Existing or Created</p>
           <select onChange={(evt) => handleFilterDb(evt)}>
             <option value="all">All</option>
             <option value="api">Existing</option>
@@ -83,9 +93,9 @@ export default function Home() {
 
         <div>
           <p>Order by Strength</p>
-          <select>
-            <option value="asc">Ascendant(A-Z)</option>
-            <option value="desc">Descending(Z-A)</option>
+          <select onChange={(evt) => handleOrderByStr(evt)}>
+            <option value="asc">Ascendant (min-max)</option>
+            <option value="desc">Descending (max-min)</option>
           </select>
         </div>
 
