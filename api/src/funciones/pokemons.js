@@ -24,8 +24,8 @@ class PokemonsFunctions {
             height: e.height,
             weight: e.weight,
             image: e.sprites.other.dream_world.front_default,
-            typeOne: e.types.map((e) => e.type.name)[0],
-            typeTwo: e.types.map((e) => e.type.name)[1],
+            types:e.types.map((e) =>e.type.name)
+            
             
           });
         });
@@ -36,26 +36,30 @@ class PokemonsFunctions {
       console.log(e);
     }
   }
+  
+
 
   async getPokemonsDB() {
     try {
       const PokeDB = await Pokemon.findAll({
         include: {
           model: Type,
-          attributes: ["id", "name"],
+          attributes: ["name","id"],
         },
-        attributes: [
-          "id",
-          "name",
-          "hp",
-          "attack",
-          "defense",
-          "speed",
-          "height",
-          "weight",
-          "image",
-          "createdInDB",
-        ],
+        through:{attributes:[]}
+        // attributes: [
+        //   "id",
+        //   "name",
+        //   "hp",
+        //   "attack",
+        //   "defense",
+        //   "speed",
+        //   "height",
+        //   "weight",
+        //   "image",
+          
+        //   "createdInDB",
+        // ],
       });
       return PokeDB;
     } catch (e) {
@@ -82,13 +86,8 @@ class PokemonsFunctions {
         height: foundPokemon.data.height,
         weight: foundPokemon.data.weight,
         image: foundPokemon.data.sprites.other.dream_world.front_default,
-        types:
-          foundPokemon.data.types.length < 2
-            ? [foundPokemon.data.types[0].type.name]
-            : [
-                foundPokemon.data.types[0].type.name,
-                foundPokemon.data.types[1].type.name,
-              ],
+        typeOne: foundPokemon.data.types.map((e) => e.name)[0],
+        typeTwo: foundPokemon.data.types.map((e) => e.name)[1],
       };
       return detailPokemon;
     } catch (err) {
@@ -154,6 +153,25 @@ class PokemonsFunctions {
     } catch (e) {
       console.log(e);
     }
+  }
+
+
+  async getID(data) {
+    let types = [];
+    for (let i = 0; i < data.length; i++) {
+      types.push(
+        await Type.findOne({
+          where: { name: data[i] },//en la tabla types busco los tipos de pokemon por id, y regreso solo sus ids en un array
+          attributes: ['id'],//saco el atributo id
+        })
+      );
+    }
+    return types;
+  }
+
+  async getNamesByTypes(pokemon) {
+    pokemon = pokemon.types.map((e) => e.dataValues.name);
+    return pokemon;
   }
 
 

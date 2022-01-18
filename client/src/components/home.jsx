@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import PokeCard from "./card";
 import { Fragment } from "react";
 import Paginado from "./paginado";
+import SearchBar from "./searchBar";
+
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -132,6 +134,8 @@ export default function Home() {
           paginado={paginado}
         />
 
+        <SearchBar />
+
         {currentPokemons?.map((el) => {
           return (
             <Fragment>
@@ -140,8 +144,7 @@ export default function Home() {
                   key={el.id}
                   name={el.name}
                   img={el.image}
-                  typeOne={el.typeOne}
-                  typeTwo={el.typeTwo}
+                  types={el.types.join(' - ')}
                 />
               </Link>
             </Fragment>

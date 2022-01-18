@@ -1,6 +1,7 @@
 const initialState = {
   pokemons: [],
   allPokemons: [],
+  types: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -12,6 +13,12 @@ function rootReducer(state = initialState, action) {
         allPokemons: action.payload,
       };
 
+    case "GET_TYPES":
+      return {
+        ...state,
+        types: action.payload,
+      };
+
     case "FILTER_BY_TYPE":
       const allPokemons = state.allPokemons;
       const statusFiltered =
@@ -19,7 +26,7 @@ function rootReducer(state = initialState, action) {
           ? allPokemons
           : allPokemons.filter(
               (el) =>
-                el.typeOne === action.payload || el.typeTwo === action.payload
+                el.types[0] === action.payload || el.types[1] === action.payload
             );
       return {
         ...state,
@@ -63,8 +70,8 @@ function rootReducer(state = initialState, action) {
         pokemons: sorterdArr,
       };
 
-      case "ORDER_STR":
-        const sorterdArray =
+    case "ORDER_STR":
+      const sorterdArray =
         action.payload === "asc"
           ? state.pokemons.sort((a, b) => {
               if (a.attack > b.attack) {
@@ -89,10 +96,20 @@ function rootReducer(state = initialState, action) {
         pokemons: sorterdArray,
       };
 
+    case "GET_BY_NAME":
+      return {
+        ...state,
+        pokemons: action.payload,
+      };
+
+    case "POST_POKEMON":
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }
-
 }
 
 export default rootReducer;

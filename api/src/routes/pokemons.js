@@ -54,8 +54,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  const {
+router.post('/', async (req, res, next) => {
+  let {
     name,
     hp,
     attack,
@@ -64,41 +64,93 @@ router.post("/", async (req, res) => {
     height,
     weight,
     image,
-    typeOne,
-    typeTwo,
-    createdInDB,
-  } = req.body;
-
+    types,
+    createInDb,
+  } = req.body; //recibo toda la info por body
   try {
-    const newPokemon = await Pokemon.create({
-      name,
-      hp,
-      attack,
-      defense,
-      speed,
-      height,
-      weight,
-      image,
-      typeOne,
-      typeTwo,
-      createdInDB,
-    });
-    console.log(newPokemon);
-
-    if (Array.isArray(typeOne, typeTwo)) {
-      const typesDB = await Type.findAll({
-        where: {
-          name: typeOne,
-          typeTwo,
-        },
+    if (name) {
+      if (!hp) hp = 1;
+      if (!attack) attack = 1;
+      if (!defense) defense = 1;
+      if (!speed) speed = 1;
+      if (!height) height = 1;
+      if (!weight) weight = 1;
+      if (!types.length) types = ['unknown'];
+      //solo si recibo un nombre voy a guardar el pokemon en la base de datos
+      const nameLower = name.trim().toLowerCase();
+      const pokemonCreated = await Pokemon.create({
+        name: nameLower,
+        hp,
+        attack,
+        defense,
+        speed,
+        height,
+        weight,
+        image,
+        createInDb,
       });
-      newPokemon.addType(typesDB);
+        const arrID = await service.getID(types); //Recibo un array de tipos y recibo un array de ids sacados de la tabla de tipos
+        await pokemonCreated.setTypes(arrID);
+        let pokemons = await Pokemon.findOne({
+          where: {
+            id: pokemonCreated.id,
+          }, //busco el id
+          include: Type,
+        });
+        pokemons = {
+          ...pokemons.dataValues,
+          types: service.getNamesByTypes(pokemons), //obtengo el array de tipos
+        };
+        return res.json(pokemons);
     }
-
-    res.status(200).send("Pokemon created");
-  } catch (err) {
-    res.status(400).send("Fall pokeCreated");
+    res.status(404).send('El nombre es requerido para crear un pokemon');
+  } catch (error) {
+    return res.status(404).send('error de creación');
   }
 });
+
+// router.post("/", async (req, res) => {
+//   const {
+//     name,
+//     hp,
+//     attack,
+//     defense,
+//     speed,
+//     height,
+//     weight,
+//     image,
+//     types,
+//     createdInDB,
+//   } = req.body;
+
+//   try {
+//     const newPokemon = await Pokemon.create({
+//       name,
+//       hp,
+//       attack,
+//       defense,
+//       speed,
+//       height,
+//       weight,
+//       image,
+//       createdInDB,
+//     });
+//     console.log(newPokemon);
+
+//     // if (Array.isArray(typeOne, typeTwo)) {
+//     //   const typesDB = await Type.findAll({
+//     //     where: {
+//     //       name: typeOne,
+//     //       typeTwo,
+//     //     },
+//     //   });
+//     //   newPokemon.addType(typesDB);
+//     // }
+
+//     res.status(200).send("Pokemon created");
+//   } catch (err) {
+//     res.status(400).send("Fall pokeCreated");
+//   }
+// });
 
 module.exports = router;
