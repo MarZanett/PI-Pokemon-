@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { Pokemon, Type, conn } = require("../db");
 const { Op } = require("sequelize");
-const { v4 } = require('uuid');
+const { v4 } = require("uuid");
 
 class PokemonsFunctions {
   constructor() {}
@@ -24,9 +24,7 @@ class PokemonsFunctions {
             height: e.height,
             weight: e.weight,
             image: e.sprites.other.dream_world.front_default,
-            types:e.types.map((e) =>e.type.name)
-            
-            
+            types: e.types.map((e) => e.type.name),
           });
         });
         return arrPokem;
@@ -36,35 +34,53 @@ class PokemonsFunctions {
       console.log(e);
     }
   }
+
+  async getNamesByTypes(pokemon) {
+    pokemon = pokemon.types.map((e) => e.dataValues.name);
+    return pokemon;
+  }
   
-
-
   async getPokemonsDB() {
-    try {
-      const PokeDB = await Pokemon.findAll({
-        include: {
-          model: Type,
-          attributes: ["name","id"],
-        },
-        through:{attributes:[]}
-        // attributes: [
-        //   "id",
-        //   "name",
-        //   "hp",
-        //   "attack",
-        //   "defense",
-        //   "speed",
-        //   "height",
-        //   "weight",
-        //   "image",
-          
-        //   "createdInDB",
-        // ],
-      });
-      return PokeDB;
-    } catch (e) {
-      console.log(e);
-    }
+    let arrPokemonsDb = [];
+    arrPokemonsDb = await Pokemon.findAll({
+      include: {
+        model: Type,
+        // atributes: ["name"], //trae la data mediante el nombre(la propiedad del modelo type)
+        // thorugh: {
+        //   atributes: [], //para comprobación, siempre va
+       // },
+      },
+    });
+    arrPokemonsDb = arrPokemonsDb.map((e) => {
+      return { ...e.dataValues, types: e.dataValues.types.map((e) => e.dataValues.name) };
+    });
+    return arrPokemonsDb.reverse();
+
+    // try {
+    //   const PokeDB = await Pokemon.findAll({
+    //     include: {
+    //       model: Type,
+    //       attributes: ["name","id"],
+    //     },
+    //     through:{atributes:[]}
+    // attributes: [
+    //   "id",
+    //   "name",
+    //   "hp",
+    //   "attack",
+    //   "defense",
+    //   "speed",
+    //   "height",
+    //   "weight",
+    //   "image",
+
+    //   "createdInDB",
+    // ],
+    //   });
+    //   return PokeDB;
+    // } catch (e) {
+    //   console.log(e);
+    // }
   }
 
   async getApiPokeByName(name) {
@@ -155,26 +171,19 @@ class PokemonsFunctions {
     }
   }
 
-
   async getID(data) {
     let types = [];
     for (let i = 0; i < data.length; i++) {
       types.push(
         await Type.findOne({
-          where: { name: data[i] },//en la tabla types busco los tipos de pokemon por id, y regreso solo sus ids en un array
-          attributes: ['id'],//saco el atributo id
+          where: { name: data[i] }, //en la tabla types busco los tipos de pokemon por id, y regreso solo sus ids en un array
+          attributes: ["id"], //saco el atributo id
         })
       );
     }
     return types;
   }
 
-  async getNamesByTypes(pokemon) {
-    pokemon = pokemon.types.map((e) => e.dataValues.name);
-    return pokemon;
-  }
-
-
- }
+}
 
 module.exports = PokemonsFunctions;

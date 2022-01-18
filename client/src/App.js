@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/landingPage";
 import Home from "./components/home";
 import PokemonCreate from "./components/pokemonCreated";
-//import PokemonDetail from "./components/pokemonDetail";
+import PokemonDetail from "./components/details";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Route exact path="/" element={<LandingPage />} />
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/pokemons" element={<PokemonCreate />} />
-        {/* <Route exact path="/home/:id" element={<PokemonDetail />} /> */}
+        <Route exact path="/home/:id" element={<PokemonDetail />} />
       </Routes>
       </div>
     </BrowserRouter>

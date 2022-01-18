@@ -18,7 +18,7 @@ export default function SearchBar() {
   function handleSubmit(evt) {
     evt.preventDefault();
     dispatch(getPokemonByName(name.toLowerCase()));
-    
+    setName("")
     
   }
 

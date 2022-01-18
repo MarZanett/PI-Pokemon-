@@ -18,7 +18,7 @@ export function getTypes() {
   return async function (dispatch) {
     try {
       const json = await axios.get("http://localhost:3001/api/types", {});
-      //console.log(json)
+     // console.log(json.data.name)
       return dispatch({
         type: "GET_TYPES",
         payload: json.data,
@@ -80,4 +80,20 @@ export function orderByStr(payload) {
     type: "ORDER_STR",
     payload,
   };
+}
+
+export function getDetail(id){
+return async function (dispatch) {
+  try{
+    const json = await axios.get(`http://localhost:3001/api/pokemons/${id}`)
+    
+    return dispatch({
+      type: "GET_DETAIL",
+      payload: json.data,
+    })
+  }
+  catch (err) {
+    console.log(err)
+  }
+}
 }

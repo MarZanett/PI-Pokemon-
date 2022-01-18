@@ -139,7 +139,7 @@ export default function Home() {
         {currentPokemons?.map((el) => {
           return (
             <Fragment>
-              <Link to={"/home" + el.id}>
+              <Link to={"/home/" + el.id}>
                 <PokeCard
                   key={el.id}
                   name={el.name}

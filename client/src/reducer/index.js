@@ -2,6 +2,7 @@ const initialState = {
   pokemons: [],
   allPokemons: [],
   types: [],
+  detail: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -47,7 +48,7 @@ function rootReducer(state = initialState, action) {
     case "ORDER_NAME":
       const sorterdArr =
         action.payload === "asc"
-          ? state.pokemons.sort((a, b) => {
+          ? state.allPokemons.sort((a, b) => {
               if (a.name > b.name) {
                 return 1;
               }
@@ -56,7 +57,7 @@ function rootReducer(state = initialState, action) {
               }
               return 0;
             })
-          : state.pokemons.sort((a, b) => {
+          : state.allPokemons.sort((a, b) => {
               if (a.name > b.name) {
                 return -1;
               }
@@ -107,9 +108,15 @@ function rootReducer(state = initialState, action) {
         ...state,
       };
 
-    default:
-      return state;
+    case "GET_DETAIL":
+      return {
+        ...state,
+        detail: action.payload
+      };
+      
+      default:
+        return state;
+    }
   }
-}
 
 export default rootReducer;

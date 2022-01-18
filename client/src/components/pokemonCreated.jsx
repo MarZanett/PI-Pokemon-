@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-//import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPokemonByName } from "../actions";
 import { postPokemon, getTypes } from "../actions";
@@ -28,8 +28,9 @@ function validate(input) {
 
 export default function PokemonCreated() {
   const dispatch = useDispatch();
-  //const history = useHistory();
+  const navigate = useNavigate();
   const allTypes = useSelector((state) => state.types);
+  //console.log(allTypes)
   const [error, setError] = useState({});
   //console.log(allTypes.map(e=>e.name))
   const [input, setInput] = useState({
@@ -66,13 +67,13 @@ export default function PokemonCreated() {
   function handleSelect(evt) {
     setInput({
       ...input,
-      types: [input.types, evt.target.value], //Se agrega en un arreglo todo lo seleccionado
+      types: [...input.types, evt.target.value], //Se agrega en un arreglo todo lo seleccionado
     });
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    //console.log(input);
+    console.log(input);
     dispatch(postPokemon(input));
     alert("¡Pokemon Created!");
     setInput({
@@ -86,7 +87,7 @@ export default function PokemonCreated() {
       img: "",
       types: [],
     });
-    //history.push("/home")
+    navigate("/home")
   }
 
   function handleDelete(el) {
@@ -198,10 +199,13 @@ export default function PokemonCreated() {
 
         <br/>
           <button type="submit">Create Pokemon</button>
-        
-      {
-        console.log(input.types.map(el => el)),
+          {input.types.map(cou => 
+            <div>
+                <button className='country-button' onClick={() => handleDelete(cou)}>{cou}</button>
+            </div>)}
+      </form>
 
+      {/* {
         input.types.map((el) => {
         <div className="divTyp">
           <p>{el}</p>
@@ -209,8 +213,8 @@ export default function PokemonCreated() {
             X
           </button>
         </div>;
-      })}
-      </form>
+      }
+      )} */}
 
     </div>
   );
