@@ -8,13 +8,12 @@ class PokemonsFunctions {
 
   async getPokemonsApi() {
     try {
-      const Api = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=40");
+      const Api = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=151");
       const resMap = Api.data.results.map((e) => axios.get(e.url));
-      const promise = await Promise.all(resMap).then((e) => {
+      const e = await Promise.all(resMap);
         let pokemon = e.map((e) => e.data);
-        let arrPokem = [];
-        pokemon.map((e) => {
-          arrPokem.push({
+        let arrPokem = pokemon.map((e) => {
+         return {
             id: e.id,
             name: e.name,
             hp: e.stats[0].base_stat,
@@ -25,13 +24,12 @@ class PokemonsFunctions {
             weight: e.weight,
             image: e.sprites.other.dream_world.front_default,
             types: e.types.map((e) => e.type.name),
-          });
-        });
-        return arrPokem;
-      });
-      return promise;
-    } catch (e) {
-      console.log(e);
+          };
+        
+      })
+      return arrPokem
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -45,10 +43,7 @@ class PokemonsFunctions {
     arrPokemonsDb = await Pokemon.findAll({
       include: {
         model: Type,
-        // atributes: ["name"], //trae la data mediante el nombre(la propiedad del modelo type)
-        // thorugh: {
-        //   atributes: [], //para comprobación, siempre va
-       // },
+        
       },
     });
     arrPokemonsDb = arrPokemonsDb.map((e) => {
@@ -56,31 +51,7 @@ class PokemonsFunctions {
     });
     return arrPokemonsDb.reverse();
 
-    // try {
-    //   const PokeDB = await Pokemon.findAll({
-    //     include: {
-    //       model: Type,
-    //       attributes: ["name","id"],
-    //     },
-    //     through:{atributes:[]}
-    // attributes: [
-    //   "id",
-    //   "name",
-    //   "hp",
-    //   "attack",
-    //   "defense",
-    //   "speed",
-    //   "height",
-    //   "weight",
-    //   "image",
-
-    //   "createdInDB",
-    // ],
-    //   });
-    //   return PokeDB;
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    
   }
 
   async getApiPokeByName(name) {

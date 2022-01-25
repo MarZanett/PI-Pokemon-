@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
         res.send(allPokeApi);
       }
     } else if (name) {
-      const allPokeApi = await service.getPokemonsApi();
+      const allPokeApi = await service.getApiPokeByName();
       const allPokeDB = await service.getPokemonsDB();
       //console.log(allPokeDB)
       if (allPokeDB.length > 0) {

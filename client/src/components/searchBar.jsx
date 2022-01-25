@@ -11,15 +11,11 @@ export default function SearchBar() {
     evt.preventDefault();
     setName(evt.target.value);
     console.log(name);
-    
-    
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
     dispatch(getPokemonByName(name.toLowerCase()));
-    setName("")
-    
   }
 
   return (

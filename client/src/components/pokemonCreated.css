@@ -1,0 +1,95 @@
+.form-container {
+    display: inline-block;
+  position: relative;
+    padding: 15px;
+    
+    max-width: 170px ;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: rgba(84, 84, 250, 0.75);
+  border-style: solid;
+  border-width: 1px;
+
+  text-transform: capitalize;
+  color: rgb(253, 250, 250);
+}
+
+.create-button{
+    border-radius:10%;
+    padding:0.5em;
+    font-size:15px;
+    font-weight: 500;
+    width: 100px;
+    height: 50px;
+    border-style:solid;
+    margin:15px
+}
+
+.create-button:hover{
+    background-color:rgb(36, 192, 5);
+    color:rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.type-button{
+    border-radius:10%;
+    
+    font-size:13px;
+    font-weight: 600;
+    width: 85px;
+    height: 25px;
+    border-style:solid;
+    margin:11px
+}
+
+.type-button:hover{
+    background-color:rgb(250, 6, 6);
+    color:rgb(3, 3, 3);
+    cursor: pointer;
+}
+
+.error{
+    color:rgb(248, 8, 8);
+    background-color:rgba(7, 0, 0, 0.753);
+    font-size:15px;
+    font-weight: 800;
+    padding:0.5em;
+
+}
+
+.return-button{
+    border-radius:10%;
+    padding:0.5em;
+    font-size:15px;
+    font-weight: 500;
+    width: 100px;
+    height: 50px;
+    border-style:solid;
+    margin:15px
+}
+
+.return-button:hover{
+    background-color:rgb(8, 8, 8);
+    color:rgb(236, 236, 236);
+    cursor: pointer;
+}
+
+.input-select{
+    height: 25px;
+    width: 170px;
+}
+
+.end-container{
+    margin:15px;
+    display:flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 98%;
+    
+}
+
+.title{
+    font-size:35px;
+    font-weight: 800;
+    font-family: 'Noto Serif Display', serif;
+}

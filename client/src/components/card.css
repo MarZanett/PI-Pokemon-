@@ -1,0 +1,18 @@
+.card-container{
+    border-radius:10px;
+    background-color: rgba(84, 84, 250, 0.75);
+    border-style:solid;
+    border-width:1px;
+    margin: 1em;
+    padding: 0.5em;
+    
+}
+
+.name-card{
+    text-transform: capitalize;
+    color: rgb(250, 249, 249);
+}
+
+.card-container:hover{
+    background-color: rgba(0, 0, 255, 0.699);
+}
